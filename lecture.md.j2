@@ -1,0 +1,27 @@
+---
+title: "{{ title }}"
+summary: "{{ summary | replace('"', '\\"') }}"
+date: "{{ date }}"
+subject: "{{ subject }}"
+---
+
+{% if subject %}# {{ subject }} — {{ date }} — {{ title }}
+{% else %}# {{ date }} — {{ title }}
+{% endif %}
+
+{% for topic in topics[:10] %}{{ loop.index }}. {{ topic.title }}
+{% endfor %}
+
+---
+
+{% for topic in topics[:10] %}{% set topic_number = loop.index %}
+### {{ topic_number }}. {{ topic.title }}
+
+{{ topic.text }}
+{% for subtopic in topic.subtopics | default([], true) %}
+#### {{ topic_number }}.{{ loop.index }}. {{ subtopic.title }}
+
+{{ subtopic.text }}
+{% endfor %}
+
+{% endfor %}
